@@ -5,10 +5,22 @@ class ComplaintController {
     //obtener todos los reclamos
     async getAllComplaints(req, res) {
         try {
-            const results = await Complaints.getAll();
+            const results = await complaints.getAll();
             res.status(200).json({
                 status: 'exito',
                 data: results,
+            });
+            results.map(reclamo  => {
+                console.log(`idReclamo: ${reclamo.idReclamo}
+Asunto: ${reclamo.asunto}
+Descripción: ${reclamo.descripcion}
+Creación: ${reclamo.fechaCreado}
+Finalización: ${reclamo.fechaFinalizado}
+Cancelación: ${reclamo.fechaCancelado}
+Estado: ${reclamo.idReclamoEstado}
+Tipo: ${reclamo.idReclamoTipo}
+Usuario creador: ${reclamo.idUsuarioCreador}
+Usuario finalizador: ${reclamo.idUsuarioFinalizador}\n`);
             });
         } catch (error) {
             console.error('Error al recuperar reclamos:', error);
@@ -24,7 +36,7 @@ class ComplaintController {
         const { id } = req.params;
 
         try {
-            const result = await Complaints.getById(id);
+            const result = await complaints.getById(id);
             if (!result) {
                 return res.status(404).json({
                     status: 'error',
@@ -97,15 +109,13 @@ class ComplaintController {
     //cancelar reclamo creado
     async cancelComplaint(req, res) {
         const clientId = req.user.id; 
-        //const clientId = 5; // Descomentar para pruebas
-        //const { id } = req.params;  // Descomentar para pruebas
-
+        const { id } = req.params;  // Descomentar para pruebas
         try {
-            const success = await Complaints.cancelComplaint(id, clientId);
+            const success = await complaints.cancelComplaint(id, clientId);
             if (!success) {
                 return res.status(400).json({
                     status: 'error',
-                    message: 'no se puede cancelar el reclamo. verifica que te pertenezca y este en estado creado.',
+                    message: 'No se puede cancelar el reclamo. Verifique que sea el autor y que el reclamo esté activo.',
                 });
             }
 
@@ -128,7 +138,7 @@ class ComplaintController {
         
         try {
             //ahora solo marca como eliminado pero no borra permanente de la bd
-            const deleted = await Complaints.markAsDeletedById(id);
+            const deleted = await complaints.markAsDeletedById(id);
             if (!deleted) {
                 return res.status(404).json({
                     status: 'error',

@@ -17,13 +17,24 @@ Tipo: ${complaint.idReclamoTipo} \n`
         return complaints[0]
     }
 
-    //metodo para buscar un usuario por su correo
+    //metodo para buscar un usuario por su correo modificadooo
     async findUserByEmail(email) {
         try {
-            const [user] = await db.query('SELECT * FROM usuario WHERE email = ?', [email]);
+            const [user] = await db.query('SELECT * FROM usuarios WHERE usuarios.correoElectronico = ?', [email]);
             return user || null;
         } catch (error) {
             console.error('Error al buscar usuario por correo electrónico:', error);
+            throw error;
+        }
+    }
+
+    //metodo para buscar un usuario por su id
+    async findUserById(userId) {
+        try {
+            const [user] = await db.query('SELECT * FROM usuarios WHERE  usuarios.idUsuario = ?', [userId]);
+            return user || null;
+        } catch (error) {
+            console.error('Error al buscar usuario por id:', error);
             throw error;
         }
     }
@@ -42,7 +53,7 @@ Tipo: ${complaint.idReclamoTipo} \n`
     //otener tareas de un empleado
     async getTasksForEmployee(userId) {
         try {
-            const tasks = await db.query('SELECT * FROM reclamo WHERE empleado_id = ?', [userId]);
+            const tasks = await db.query('SELECT oficinas.nombre AS nombre_oficina, reclamos.idReclamo, reclamos.descripcion, reclamos.fechaCreado FROM reclamos JOIN oficinas ON reclamos.idReclamoTipo = oficinas.idReclamoTipo JOIN usuariosoficinas ON oficinas.idOficina = usuariosoficinas.idOficina JOIN usuarios ON usuariosoficinas.idUsuario = usuarios.idUsuario WHERE usuarios.idUsuario = ?', [userId]);
             return tasks;
         } catch (error) {
             console.error('Error al obtener tareas del empleado:', error);

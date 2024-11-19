@@ -19,6 +19,11 @@ class UserService {
         return await userRepository.findUserByEmail(email);
     }
 
+    // Buscar un usuario por id 
+    async findUserById(userId) {
+        return await userRepository.findUserById(userId);
+    }
+
     // Actualizar informacion de usuario
     async updateUser(userId, updatedData) {
         return await userRepository.updateUser(userId, updatedData);

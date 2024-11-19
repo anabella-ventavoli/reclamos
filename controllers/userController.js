@@ -66,10 +66,23 @@ class UserController {
     async getEmployeeTasks(req, res) {
         try {
             const employeeId = req.user.id;
-            const tasks = await UserService.getTasksForEmployee(employeeId);
-            res.status(200).json(tasks);
+            const tasks = await userService.getTasksForEmployee(employeeId);
+            const employee = await userService.findUserById(employeeId);
+            //console.log(employee[0]);
+            res.status(200).json(tasks[0]); // solo la respuesta, le saqué buffer y metadata
+            console.log(`Los reclamos a cargo del empleado ${employee[0].nombre} ${employee[0].apellido} son:`)
+            tasks[0].map(task => 
+                console.log(`Oficina: ${task.nombre_oficina}
+ID: ${task.idReclamo}
+Descripción: ${task.nombre_oficina}
+Creación: ${task.fechaCreado}
+                    `));
         } catch (error) {
-            res.status(500).json({ error: 'Failed to fetch tasks' });
+            res.status(500).json({ error: 'Failed to fetch tasks' 
+                
+            });
+            // descomentar para error detallado
+            console.log(error); 
         }
     }
 
