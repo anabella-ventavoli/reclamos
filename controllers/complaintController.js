@@ -1,4 +1,5 @@
 const Complaints = require('../services/complaintService');
+const complaints = new Complaints();
 
 class ComplaintController {
     //obtener todos los reclamos
@@ -77,7 +78,7 @@ class ComplaintController {
             console.log(req.body);
             const userId = req.user.id;
             const newComplaint = req.body;
-            const createdComplaint = await Complaints.add(userId, newComplaint);
+            const createdComplaint = await complaints.add(userId, newComplaint);
             
             res.status(201).json({
                 status: 'Éxito',

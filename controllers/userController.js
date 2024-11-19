@@ -1,5 +1,7 @@
 const UserService = require('../services/userService');
+const ComplaintService = require('../services/complaintService');
 const userService = new UserService();
+const complaintService = new ComplaintService();
 
 class UserController {
     async login(req, res) {
@@ -36,13 +38,29 @@ class UserController {
 
     async updateComplaintStatus(req, res) {
         try {
-            const complaintId = req.params.id;
-            const { status } = req.body;
-            const updatedComplaint = await UserService.updateComplaintStatus(complaintId, status);
-            res.status(200).json(updatedComplaint);
+            const idComplaint = req.params.id;
+            console.log(idComplaint); 
+            const status = req.body.idReclamoEstado;
+            console.log(status);
+
+            if (status === undefined) {
+                return res.status(400).sens({
+                    estado: "Falla",
+                    mensaje: "El campo estado no puede estar vacío"
+                })
+            }
+           const modifiedComplaint = await complaintService.updateComplaint(idComplaint, status);
+           if (modifiedComplaint.estado) {
+                res.status(200).send({estado: "OK", mensaje: modifiedComplaint.mensaje});
+           }else{
+                res.status(404).send({estado: "Falla", mensaje: modifiedComplaint.mensaje});
+           }
+
         } catch (error) {
-            res.status(500).json({ error: 'Failed to update complaint status' });
+            console.error('Error en updateComplaintStatus:', error); // Log más detallado
+            res.status(500).json({ error: 'Failed to update complaint status', detalle: error.message });
         }
+        
     }
 
     async getEmployeeTasks(req, res) {

@@ -12,7 +12,7 @@ router.post('/complaints', authenticateJWT, authorizeRole(3), userController.cre
 router.get('/complaints', authenticateJWT, authorizeRole(3), userController.getComplaints); //ok
  
 //rutas de empleados
-router.put('/complaints/:id/attend', authenticateJWT, authorizeRole(2), userController.updateComplaintStatus);
+router.put('/complaints/:id/attend', authenticateJWT, authorizeRole(2), userController.updateComplaintStatus); //ok
 router.get('/complaints/assigned', authenticateJWT, authorizeRole(2), userController.getEmployeeTasks);
 
 //rutas de administradores

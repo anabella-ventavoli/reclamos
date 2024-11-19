@@ -1,4 +1,7 @@
-const complaintRepository = require('../database/complaint');
+const ComplaintRepository = require('../database/complaint');
+const complaintRepository = new ComplaintRepository;
+const Notifications = require('./notificationsService');
+const notifications = new Notifications;
 
 class ComplaintService {
     //obtener todos los reclamos
@@ -36,8 +39,35 @@ class ComplaintService {
     }
 
     //actualizar un reclamo
-    async updateComplaint(id, complaint) {
-        return await complaintRepository.updateComplaint(id, complaint);
+    async updateComplaint(idComplaint, status) {
+        //console.log(idComplaint);
+        //console.log(status); 
+        const exists = await complaintRepository.getById(idComplaint);
+        if (exists === null) {
+            return {estado: false, menssaje: "el id no existe"};
+        }
+        console.log(exists);
+        //modificar el reclamo
+        const modified = await complaintRepository.updateComplaint(idComplaint, status);
+        if (!modified) {
+            return {estado: false, menssaje: "no se pudo modificar el reclamo"};
+        }
+
+        //buscar datos del cliente
+        const client = await complaintRepository.getClientByComplaint(idComplaint);
+        if (!client) {
+            return {estado: false, menssaje: "no se pudo encontrar el cliente"};
+        }
+
+        const infoMail = {
+            name: client[0].nombre,
+            lastname: client[0].apellido,
+            email: client[0].correoElectronico,
+            complaint: idComplaint
+        }
+        console.log(infoMail);
+        // enviar la notificacion
+        return await notifications.sendEmail(infoMail);
     }
 }
 
