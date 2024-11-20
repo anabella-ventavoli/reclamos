@@ -75,10 +75,25 @@ class ComplaintRepository {
     }
 
     //actualizar un reclamo
-    async updateComplaint(idComplaint, status) {
-        console.log("llegoooooo", idComplaint, status);
-        const query = 'UPDATE reclamos SET idReclamoEstado = ? WHERE idReclamo = ?';
-        const [result] = await db.query(query, [status, idComplaint]);
+    async updateComplaint(idComplaint, jsonBody) {
+
+        console.log("Datos recibidos", jsonBody);
+        
+        const query = 'UPDATE reclamos SET asunto = COALESCE(?, asunto), descripcion = COALESCE(?, descripcion), fechaCreado = COALESCE(?, fechaCreado), fechaFinalizado = COALESCE(?, fechaFinalizado), idReclamoEstado = COALESCE(?, idReclamoEstado), idReclamoTipo = COALESCE(?, idReclamoTipo), idUsuarioCreador = COALESCE(?, idUsuarioCreador), idUsuarioFinalizador = COALESCE(?, idUsuarioFinalizador) WHERE idReclamo = ?;';
+    // Prepara los valores en el mismo orden que las columnas
+    const values = [
+        jsonBody.asunto || null,
+        jsonBody.descripcion || null,
+        jsonBody.fechaCreado || null,
+        jsonBody.fechaFinalizado || null,
+        jsonBody.idReclamoEstado || null,
+        jsonBody.idReclamoTipo || null,
+        jsonBody.idUsarioCreador || null,
+        jsonBody.idUsuarioFinalizador || null,
+        idComplaint];
+    // Ejecuta la consulta
+    const [result] = await db.query(query, values);
+
         return result.affectedRows > 0; // Devuelve true si se actualizó al menos una fila
     }
     

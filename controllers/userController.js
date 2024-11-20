@@ -40,20 +40,23 @@ class UserController {
         try {
             const idComplaint = req.params.id;
             console.log(idComplaint); 
-            const status = req.body.idReclamoEstado;
+            const status = req.body;
             console.log(status);
 
             if (status === undefined) {
-                return res.status(400).sens({
+                return res.status(400).send({
                     estado: "Falla",
                     mensaje: "El campo estado no puede estar vacío"
+                    
                 })
             }
+
            const modifiedComplaint = await complaintService.updateComplaint(idComplaint, status);
+
            if (modifiedComplaint.estado) {
                 res.status(200).send({estado: "OK", mensaje: modifiedComplaint.mensaje});
            }else{
-                res.status(404).send({estado: "Falla", mensaje: modifiedComplaint.mensaje});
+                res.status(404).send({estado: "Falla con el id del reclamo", mensaje: modifiedComplaint.mensaje});
            }
 
         } catch (error) {
@@ -89,7 +92,7 @@ Creación: ${task.fechaCreado}
     async manageComplaintTypes(req, res) {
         try {
             const { complaintTypeData } = req.body;
-            const result = await UserService.manageComplaintTypes(complaintTypeData);
+            const result = await userService.manageComplaintTypes(complaintTypeData);
             res.status(200).json(result);
         } catch (error) {
             res.status(500).json({ error: 'Failed to manage complaint types' });
@@ -108,13 +111,19 @@ Creación: ${task.fechaCreado}
     async downloadReport(req, res) {
         try {
             const { format } = req.params;
-            const report = await UserService.downloadReport(format);
+            const report = await userService.generateReport(format);
+            if (!report) {
+                return res.status(400).json({ error: 'Formato no soportado' });
+            }
             res.setHeader('Content-Disposition', `attachment; filename=report.${format}`);
+            res.setHeader('Content-Type', 'application/octet-stream');
             res.send(report);
         } catch (error) {
-            res.status(500).json({ error: 'Failed to download report' });
+            console.error('Error al descargar el reporte:', error);
+            res.status(500).json({ error: 'Error al generar el reporte' });
         }
-    }
+    }     
+    
 }
 
 module.exports = new UserController();

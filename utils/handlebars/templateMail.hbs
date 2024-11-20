@@ -7,10 +7,12 @@
 </head>
 <body style="font-family: Arial, sans-serif; background-color: #f0f0f0; margin: 0; padding: 0;">
     <div style="max-width: 600px; margin: 0 auto; padding: 20px; background-color: #ffffff; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
-        <h1 style="color: #03912e; text-align: center;">Notificación de reclamo</h1>
-        <h4 style="font-weight: bold;">Estimado Sr/ra {{name}} {{lastname}}</h4>
-        <p style="color: #000;">Nos comunicamos para informarle que su reclamo nro {{complaint}} ha cambiado de estado.</p>
-        <h4 style="font-weight: bold;">No responder a este mensaje.</h4>
+        <h1 style="color: crimson; text-align: center;">Notificación de reclamo</h1>
+        <h3 style="font-weight: bold;">Estimado Sr/ra {{name}} {{lastname}},</h3>
+        <h3 style="color: #000;">Nos comunicamos para informarle que su reclamo número {{complaint}} ha sido actualizado. En breve nos comunicaremos con usted para informarle de los cambios del mismo.</h3>
+        <hr style="border: 1px solid #000; width: 750%; margin: 20px auto;">
+        <h4 style="font-weight: bold;">Puede ver el estado de sus reclamos <u>aquí</u>.<br>No responder a este mensaje.<br><br> El mensaje fue enviado a <u>{{email}}</u>. Si recibió este correo por error, por favor ignórelo y disculpe las molestias. </h4>
+       
     </div>  
 </body>
 </html>

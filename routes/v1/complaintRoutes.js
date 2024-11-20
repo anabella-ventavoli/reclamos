@@ -6,7 +6,7 @@ const router = express.Router();
 const complaintController = new ComplaintController();
 
 //ruta para agregar un reclamo 
-//router.post('/complaints', authenticateJWT, complaintController.addComplaint);
+router.post('/complaints', authenticateJWT, complaintController.addComplaint);
 
 //ruta para obtener todos los reclamos 
 router.get('/complaints', authenticateJWT, authorizeRole(1), complaintController.getAllComplaints); // ok
@@ -24,6 +24,6 @@ router.patch('/complaints/:id/cancel', authenticateJWT, complaintController.canc
 router.delete('/complaints/:id', authenticateJWT, complaintController.delete);
 
 //ruta para actualizar un reclamo existente 
-router.put('/complaints/:id', authenticateJWT, complaintController.updateComplaint);
+router.patch('/complaints/:id', authenticateJWT, complaintController.updateComplaint);
 
 module.exports = router;

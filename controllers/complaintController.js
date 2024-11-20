@@ -63,7 +63,7 @@ Usuario finalizador: ${reclamo.idUsuarioFinalizador}\n`);
         const clientId = req.user.id;
     
         try {
-            const results = await Complaints.getComplaintsByClient(clientId);
+            const results = await complaints.getComplaintsByClient(clientId);
             if (results.length === 0) {
                 return res.status(404).json({
                     status: 'error',
@@ -162,16 +162,18 @@ Usuario finalizador: ${reclamo.idUsuarioFinalizador}\n`);
 
     //actualizar un reclamo
     async updateComplaint(req, res) {
-        const { id } = req.params;
-        const updatedData = req.body;
+        const {id} = req.params;
+        const jsonBody = req.body;
+        console.log(id);
+        console.log(jsonBody);
         try {
-            const success = await Complaints.updateComplaint(id, updatedData);
+            const success = await complaints.updateComplaint(id, jsonBody);
             if (!success) {
                 return res.status(404).json({
                     status: 'error',
                     message: 'reclamo no encontrado o no se realizaron cambios',
                 });
-            }
+            }1
 
             res.status(200).json({
                 status: 'exito',

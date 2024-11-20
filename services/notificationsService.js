@@ -25,7 +25,6 @@ class NotificationsService {
         });
         
         const mailOptions = {
-
             to: infoMail.email,
             subject: "NOTIFICACION",
             html: mailHtml

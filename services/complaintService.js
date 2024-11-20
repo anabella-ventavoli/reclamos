@@ -39,16 +39,16 @@ class ComplaintService {
     }
 
     //actualizar un reclamo
-    async updateComplaint(idComplaint, status) {
+    async updateComplaint(idComplaint, jsonBody) {
         //console.log(idComplaint);
-        //console.log(status); 
+        //console.log(jsonBody); 
         const exists = await complaintRepository.getById(idComplaint);
         if (exists === null) {
             return {estado: false, menssaje: "el id no existe"};
         }
         console.log(exists);
         //modificar el reclamo
-        const modified = await complaintRepository.updateComplaint(idComplaint, status);
+        const modified = await complaintRepository.updateComplaint(idComplaint, jsonBody);
         if (!modified) {
             return {estado: false, menssaje: "no se pudo modificar el reclamo"};
         }
