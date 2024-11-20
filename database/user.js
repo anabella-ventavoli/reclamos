@@ -64,8 +64,8 @@ Tipo: ${complaint.idReclamoTipo} \n`
     //obtener estadisticas
     async getStatistics() {
         try {
-            const [totalReclamos] = await db.query('SELECT COUNT(*) AS count FROM reclamo');
-            return { totalReclamos: totalReclamos.count };
+            const [totalReclamos] = await db.query('SELECT COUNT(*) AS count FROM reclamos');
+            return totalReclamos;
         } catch (error) {
             console.error('Error al obtener estadísticas:', error);
             throw error;

@@ -24,6 +24,6 @@ router.patch('/complaints/:id/cancel', authenticateJWT, complaintController.canc
 router.delete('/complaints/:id', authenticateJWT, complaintController.delete);
 
 //ruta para actualizar un reclamo existente 
-router.patch('/complaints/:id', authenticateJWT, complaintController.updateComplaint);
+router.patch('/complaints/:id', authenticateJWT, authorizeRole(1), complaintController.updateComplaint); //ok 
 
 module.exports = router;

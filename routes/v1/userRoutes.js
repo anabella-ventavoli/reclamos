@@ -16,8 +16,8 @@ router.put('/complaints/:id/attend', authenticateJWT, authorizeRole(2), userCont
 router.get('/complaints/assigned', authenticateJWT, authorizeRole(2), userController.getEmployeeTasks); //ok traer reclamos a cargo de un empleado
 
 //rutas de administradores
-router.post('/complaint-types', authenticateJWT, authorizeRole(1), userController.manageComplaintTypes);
-router.get('/stats', authenticateJWT, authorizeRole(1), userController.getAdminStats);
-router.get('/report/:format', authenticateJWT, authorizeRole(1), userController.downloadReport);
+router.post('/complaint-types', authenticateJWT, authorizeRole(1), userController.manageComplaintTypes); //ok
+router.get('/stats', authenticateJWT, authorizeRole(1), userController.getAdminStats); //
+router.get('/report/:format', authenticateJWT, authorizeRole(1), userController.downloadReport); //ok
 
 module.exports = router;

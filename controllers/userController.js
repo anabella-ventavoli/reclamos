@@ -91,17 +91,19 @@ Creación: ${task.fechaCreado}
 
     async manageComplaintTypes(req, res) {
         try {
-            const { complaintTypeData } = req.body;
+            const complaintTypeData = req.body;
+            console.log(complaintTypeData);
             const result = await userService.manageComplaintTypes(complaintTypeData);
             res.status(200).json(result);
         } catch (error) {
             res.status(500).json({ error: 'Failed to manage complaint types' });
+            console.log(error);
         }
     }
 
     async getAdminStats(req, res) {
         try {
-            const stats = await UserService.getStatistics();
+            const stats = await userService.getStatistics();
             res.status(200).json(stats);
         } catch (error) {
             res.status(500).json({ error: 'Failed to fetch stats' });

@@ -6,7 +6,7 @@ const path = require('path');
 
 class UserService {
 
-    // Crear reclamo, agregado por mi 
+    // Crear reclamo
     async createComplaint(userId, complaintData) {
         const complaints = await userRepository.createComplaint(userId, complaintData);
         return complaints;
@@ -97,6 +97,16 @@ async generateReport(format) {
     }
     }
         
+    //crear tipo reclamo
+    async manageComplaintTypes(complaintTypeData) {
+        const query = `INSERT INTO reclamostipo (descripcion, activo)
+        VALUES (?, ?)`;
+        const [result] = await db.query(query, [
+        complaintTypeData.descripcion, 
+        complaintTypeData.activo || 1,
+        ]);
+        return { idReclamo: result.insertId, ...complaintTypeData };
+    }
 
 }
 
